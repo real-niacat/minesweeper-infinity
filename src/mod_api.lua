@@ -1,4 +1,4 @@
-MOD_API = {}
+local MOD_API = {}
 
 MOD_API.hooked_functions = {}
 
@@ -9,3 +9,5 @@ end
 function MOD_API.apply_hook(ref_table, key)
     
 end
+
+return MOD_API

@@ -1,14 +1,14 @@
 luis = require("luis.init")("luis/widgets")
 luis.flux = require("luis.3rdparty.flux")
-local lw = require("luis_wrapper")
-print_table = require("print_table")
+local lw = require("src.luis_wrapper")
+print_table = require("src.print_table")
 print() -- adds a newline in the console because for some reason love2d doesn't do that itself so it starts the first print on the same line as the `love foldername` command
 -- ugh
 
 
-local minesweeper = require("minesweeper")
-require("mod_api")
-local mods = require("mod_manager")
+local minesweeper = require("src.minesweeper")
+MOD_API = require("src.mod_api")
+local mods = require("src.mod_manager")
 game = {}
 
 --#region Menus

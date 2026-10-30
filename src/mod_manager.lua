@@ -41,24 +41,37 @@ local function get_mods_info()
     return mods
 end
 
+local function load_mod(mod)
+    if mod.main_file_path then
+        local chunk, err = load(love.filesystem.read(mod.main_file_path), mod.name)
+        if chunk then
+            CURRENT_MOD = mod
+            local _, run_err = pcall(chunk)
+            CURRENT_MOD = nil
+            if run_err then
+                mod.load_failed = true
+                mod.exec_failed = true
+                mod.err = run_err
+            end
+        else
+            mod.load_failed = true
+            mod.exec_failed = true
+            mod.err = err
+        end
+    end
+end
+
+local function unload_mod(mod, mods)
+    if mods[mod].unload then
+        mods[mod].unload()
+    end
+end
+
 local function load_mods(mods)
     for k, v in pairs(mods) do
-        if v.main_file_path then
-            local chunk, err = load(love.filesystem.read(v.main_file_path), k)
-            if chunk then
-                CURRENT_MOD = v
-                local _, run_err = pcall(chunk)
-                CURRENT_MOD = nil
-                if run_err then
-                    v.load_failed = true
-                    v.exec_failed = true
-                    v.err = run_err
-                end
-            else
-                v.load_failed = true
-                v.exec_failed = true
-                v.err = err
-            end
+        load_mod(v)
+        if v.load then
+            v.load()
         end
     end
 end
